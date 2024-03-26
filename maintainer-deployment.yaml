@@ -1,0 +1,39 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: maintainerr
+  labels:
+    app: maintainerr
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: maintainerr
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: maintainerr
+    spec:
+      #hostNetwork: true
+      containers:
+      - name: maintainerr
+        imagePullPolicy: "Always"
+        image: ghcr.io/jorenn92/maintainerr:latest 
+        ports:
+        - name: http
+          containerPort: 6246 
+          protocol: TCP
+        env:
+        - name: TZ
+          value: "America/Denver"
+        volumeMounts:
+        - name: k8s-pv02
+          mountPath: /config
+          subPath: maintainerr/config
+      volumes:
+      - name: k8s-pv02
+        persistentVolumeClaim:
+          claimName: synology-k8s-pv02
