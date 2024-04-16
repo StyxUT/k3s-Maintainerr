@@ -31,8 +31,8 @@ spec:
           value: "America/Denver"
         volumeMounts:
         - name: k8s-pv02
-          mountPath: /config
-          subPath: maintainerr/config
+          mountPath: /opt/data
+          subPath: maintainerr/data
       volumes:
       - name: k8s-pv02
         persistentVolumeClaim:
