@@ -22,10 +22,10 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-                - key: tpu
-                  operator: NotIn
-                  values:
-                  - "true"
+              - key: tpu
+                operator: NotIn
+                values:
+                - "true"
       containers:
       - name: maintainerr
         imagePullPolicy: "Always"
@@ -39,8 +39,8 @@ spec:
           value: "America/Denver"
         volumeMounts:
         - name: k8s-pv02
-          mountPath: /opt/data
-          subPath: maintainerr/data
+          mountPath: /config
+          subPath: maintainerr/config
       volumes:
       - name: k8s-pv02
         persistentVolumeClaim:
