@@ -37,10 +37,15 @@ spec:
         env:
         - name: TZ
           value: "America/Denver"
+        - name: user
+          value: "1000"
         volumeMounts:
         - name: k8s-pv02
           mountPath: /config
           subPath: maintainerr/config
+        - name: k8s-pv02
+          mountPath: /opt/data
+          subPath: maintainerr/opt/data
       volumes:
       - name: k8s-pv02
         persistentVolumeClaim:
