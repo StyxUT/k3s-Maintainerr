@@ -11,10 +11,5 @@ spec:
     - name: http
       port: 6246
       protocol: TCP
-      targetPort: 6246  
-  externalIPs:
-    - 192.168.0.211
-    - 192.168.0.221
-    - 192.168.0.222 
-    - 192.168.0.223
-    - 192.168.0.224
+      targetPort: 6246
+      nodePort: 30646

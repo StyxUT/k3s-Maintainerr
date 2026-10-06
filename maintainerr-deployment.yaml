@@ -17,23 +17,41 @@ spec:
       labels:
         app: maintainerr
     spec:
-      affinity:
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: tpu
-                operator: NotIn
-                values:
-                - "true"
+      nodeSelector:
+        kubernetes.io/hostname: k3s-worker-01
+      imagePullSecrets:
+      - name: image-registry-credentials
       containers:
       - name: maintainerr
-        imagePullPolicy: "Always"
-        image: ghcr.io/jorenn92/maintainerr:latest 
+        imagePullPolicy: IfNotPresent
+        image: 192.168.50.222:32050/maintainerr/maintainerr@sha256:8251a1f0ba5d71acc878846a727fba566ec87cbfbf6a914fb881a5953af53d46
         ports:
         - name: http
           containerPort: 6246 
           protocol: TCP
+        startupProbe:
+          httpGet:
+            path: /api/health/live
+            port: http
+          failureThreshold: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /api/health/ready
+            port: http
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /api/health/live
+            port: http
+          periodSeconds: 30
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: "1"
+            memory: 1Gi
         env:
         - name: TZ
           value: "America/Denver"
